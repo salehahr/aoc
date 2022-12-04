@@ -1,5 +1,12 @@
 import context
-from tools import parse_ints, print_part
+from tools import parse_lines, print_part
+
+
+def parse_ints(filepath: str):
+    """Returns integer value of the current line."""
+    lines = parse_lines(filepath)
+    for line in lines:
+        yield int(line) if line.isdigit() else None
 
 
 def update_max_calories(cals: int, max_cals_list: list[int], i: int) -> None:
@@ -14,8 +21,7 @@ def update_max_calories(cals: int, max_cals_list: list[int], i: int) -> None:
 
 def get_next_index(cals: int, max_cals_list: list[int]) -> int:
     """
-    If the current elf's cumulative calories is part of max_cals_list,
-    returns the corresponding list index.
+    If cals is part of max_cals_list, returns the corresponding list index.
     Otherwise returns the last index (smallest value in max_cals_list).
     """
     if cals in max_cals_list:
@@ -37,7 +43,6 @@ def solve(filepath: str, part: int = 1):
         update_max_calories(current_elf_calories, max_calories_list, i)
         i = get_next_index(current_elf_calories, max_calories_list)
 
-    print(max_calories_list)
     print(sum(max_calories_list))
 
 
