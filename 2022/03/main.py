@@ -1,4 +1,4 @@
-from typing import Callable
+from typing import Callable, Generator, List
 
 import context
 from tools import parse_lines, print_part
@@ -14,20 +14,21 @@ UPPERCASE_MAP = {
 }
 PRIORITY_MAP = LOWERCASE_MAP | UPPERCASE_MAP
 
+Items = list[str]
+ItemsGenerator = Generator[Items, None, None]
 
-def split_lines(filepath: str) -> list[str]:
-    """Splits a string into two equal halves."""
-    lines = parse_lines(filepath)
+
+def split_lines(lines: Items) -> ItemsGenerator:
+    """Yields two equal halves of the current line."""
     for line in lines:
         n = len(line) // 2
         yield line[:n], line[n:]
 
 
-def group_lines(partition_size: int) -> Callable[[str], list[str]]:
+def group_lines(partition_size: int) -> Callable[[Items], ItemsGenerator]:
     """Yields lines in groups of partition_size."""
 
-    def _grouper(filepath: str) -> list[str]:
-        lines = parse_lines(filepath)
+    def _grouper(lines: Items) -> ItemsGenerator:
         for i in range(0, len(lines), partition_size):
             yield lines[i : i + partition_size]
 
@@ -39,7 +40,7 @@ def remove_repeated(str_input: str) -> str:
     return "".join(set(str_input))
 
 
-def get_duplicate(list_of_strings: list[str]) -> chr:
+def get_duplicate(list_of_strings: Items) -> chr:
     """Gets the first character that is repeated across the list of strings."""
     strings = [remove_repeated(s) for s in list_of_strings]
     for char in strings[0]:
@@ -51,9 +52,10 @@ def get_duplicate(list_of_strings: list[str]) -> chr:
 @print_part
 def solve(filepath: str, part: int = 1):
     priorities = 0
-    parser: callable = split_lines if part == 1 else group_lines(3)
+    parse_items: callable = split_lines if part == 1 else group_lines(3)
 
-    for list_of_items in parser(filepath):
+    lines = parse_lines(filepath)
+    for list_of_items in parse_items(lines):
         item = get_duplicate(list_of_items)
         priorities += PRIORITY_MAP[item]
 

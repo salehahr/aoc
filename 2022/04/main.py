@@ -1,4 +1,5 @@
 import re
+from typing import Generator
 
 import context
 from tools import parse_lines, print_part
@@ -6,7 +7,7 @@ from tools import parse_lines, print_part
 PairSections = tuple[int, int, int, int]
 
 
-def parse_pair_sections(filepath: str) -> PairSections:
+def parse_pair_sections(filepath: str) -> Generator[PairSections, None, None]:
     """Returns the current pair sections."""
     for line in parse_lines(filepath):
         elf_pair = [int(num) for num in re.findall(r"(\d+)", line)]

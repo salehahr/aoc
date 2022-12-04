@@ -1,8 +1,10 @@
+from typing import Generator
+
 import context
 from tools import parse_lines, print_part
 
 
-def parse_ints(filepath: str):
+def parse_ints(filepath: str) -> Generator[int | None, None, None]:
     """Returns integer value of the current line."""
     lines = parse_lines(filepath)
     for line in lines:

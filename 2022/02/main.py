@@ -17,28 +17,45 @@ class Choice(Enum):
 
 
 class PlayerChoice(Enum):
+    """Column 1."""
+
     A = Choice.ROCK.value
     B = Choice.PAPER.value
     C = Choice.SCISSCORS.value
 
+    """Column 2 of part 1."""
     X = Choice.ROCK.value
     Y = Choice.PAPER.value
     Z = Choice.SCISSCORS.value
 
 
 class Outcome(Enum):
+    """
+    Array of possible outcomes for the opponent choices of
+        [A, B, C] == [ROCK, PAPER, SCISSORS]
+    given the player choice of X (ROCK), Y (PAPER) or Z (SCISSORS).
+    """
+
     X = [Result.DRAW.value, Result.LOSE.value, Result.WIN.value]
     Y = [Result.WIN.value, Result.DRAW.value, Result.LOSE.value]
     Z = [Result.LOSE.value, Result.WIN.value, Result.DRAW.value]
 
 
 class DesiredOutcome(Enum):
+    """Column 2 of part 2."""
+
     X = Result.LOSE.value
     Y = Result.DRAW.value
     Z = Result.WIN.value
 
 
 class DesiredChoice(Enum):
+    """
+    Array of possible player choices based on opponent choices
+        [A, B, C] == [ROCK, PAPER, SCISSORS]
+    to ensure the desired outcome X (LOSE), Y (DRAW) or Z (WIN).
+    """
+
     X = [Choice.SCISSCORS.value, Choice.ROCK.value, Choice.PAPER.value]
     Y = [Choice.ROCK.value, Choice.PAPER.value, Choice.SCISSCORS.value]
     Z = [Choice.PAPER.value, Choice.SCISSCORS.value, Choice.ROCK.value]
