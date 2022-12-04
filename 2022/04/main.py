@@ -7,7 +7,7 @@ from tools import parse_lines, print_part
 PairSections = tuple[int, int, int, int]
 
 
-def parse_pair_sections(filepath: str) -> Generator[PairSections, None, None]:
+def parse_sections(filepath: str) -> Generator[PairSections, None, None]:
     """Returns the current pair sections."""
     for line in parse_lines(filepath):
         elf_pair = [int(num) for num in re.findall(r"(\d+)", line)]
@@ -58,13 +58,12 @@ def fully_contained(start1: int, end1: int, start2: int, end2: int) -> bool:
 @print_part
 def solve(filepath: str, part: int = 1):
     checker: callable = fully_contained if part == 1 else overlap
-    checks_passed = 0
+    duplicates = 0
 
-    for pair_sections in parse_pair_sections(filepath):
-        passed = checker(*pair_sections)
-        checks_passed += int(passed)
+    for sections in parse_sections(filepath):
+        duplicates += checker(*sections)
 
-    print(checks_passed)
+    print(duplicates)
 
 
 if __name__ == "__main__":
