@@ -1,4 +1,4 @@
-# 2022 Lessons Learnt
+# Notes
 
 ## Day 6
 Modelling: model finite set of states instead of huge set of objects.

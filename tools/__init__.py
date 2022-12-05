@@ -1,10 +1,10 @@
-def parse_lines(filepath: str) -> list[str]:
+def parse_lines(filepath: str, strip:bool = True) -> list[str]:
     """
     Returns a list of the lines contained within the file.
     """
     with open(filepath, "r") as file:
         lines = file.readlines()
-    return [line.strip() for line in lines]
+    return [line.strip() if strip else line for line in lines]
 
 
 def peek(filepath: str, n: int = 1) -> str | list[str]:

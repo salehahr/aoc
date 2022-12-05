@@ -1,4 +1,4 @@
-# 2022 Lessons Learnt
+# Notes
 
 ## Day 1
 Typing
@@ -37,4 +37,5 @@ callback = outer_func(A)
 result = callback(B)
 ```
 
-## Day 4
+## Day 6
+[Sets](https://docs.python.org/3/tutorial/datastructures.html#sets) = unique lists.
