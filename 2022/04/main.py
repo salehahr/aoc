@@ -1,7 +1,6 @@
 import re
 from typing import Generator
 
-import context
 from tools import parse_lines, print_part
 
 PairSections = tuple[int, int, int, int]

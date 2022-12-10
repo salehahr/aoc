@@ -1,6 +1,5 @@
 from enum import Enum
 
-import context
 from tools import parse_lines, print_part
 
 

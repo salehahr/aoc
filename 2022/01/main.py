@@ -1,6 +1,5 @@
 from typing import Generator
 
-import context
 from tools import parse_lines, print_part
 
 

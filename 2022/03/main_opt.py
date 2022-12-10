@@ -1,6 +1,5 @@
 from typing import Callable, Generator, List
 
-import context
 from tools import parse_lines, print_part
 
 NUM_ALPHABET = 26
