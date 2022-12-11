@@ -1,2 +1,2 @@
 # aoc
-Solutions to the [Advent of Code](https://adventofcode.com) puzzles.
+Code for solving [Advent of Code](https://adventofcode.com) puzzles.
