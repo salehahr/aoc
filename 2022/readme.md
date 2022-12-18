@@ -82,3 +82,37 @@ result = callback(B)
        28 % 5 = 3
        28 % 7 = 0
        ```
+ 
+
+## Day 12
+[Dijkstra's algorithm](https://en.wikipedia.org/wiki/Dijkstra%27s_algorithm#Pseudocode) to find the shortest path between nodes in a graph.
+
+## Day 13
+Exclusive OR (XOR)
+```python
+True ^ False == True
+True ^ True == False
+False ^ False == False
+```
+
+List sorting with double arguments
+```python
+from functools import cmp_to_key
+
+def compare(elem1, elem2):
+    """
+    Returns a number: (negative/zero/positive)
+    which corresponds to (less than/equals/greater than)
+    """
+    if elem1 < elem2:
+        return -1
+    elif elem1 == elem2:
+        return 0
+    elif elem1 > elem2:
+        return 1
+
+unsorted_list.sort(key=cmp_to_key(compare))
+```
+
+## Day 14
+[Memoisation](https://en.wikipedia.org/wiki/Memoization)
