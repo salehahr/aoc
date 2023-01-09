@@ -41,6 +41,10 @@ result = callback(B)
 [Sets](https://docs.python.org/3/tutorial/datastructures.html#sets) = unique lists.
 
 
+## Day 7
+`itertools.accumulate` to concatenate directories in a list.
+
+
 ## Day 11
 1. Evals in lambda.  
     The following (doesn't work properly)
