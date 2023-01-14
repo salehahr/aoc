@@ -121,6 +121,9 @@ unsorted_list.sort(key=cmp_to_key(compare))
 ## Day 14
 [Memoisation](https://en.wikipedia.org/wiki/Memoization) can really speed things up...
 
+## Day 15
+[`namedtuples`](https://docs.python.org/3/library/collections.html#collections.namedtuple) are pretty convenient.
+
 ## Day 24
 [BFS (breadth-first search)](https://en.wikipedia.org/wiki/Breadth-first_search) uses a FIFO queue,
 whereas a depth-first search uses LIFO. 
