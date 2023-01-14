@@ -4,7 +4,6 @@ from __future__ import annotations
 
 from copy import copy
 
-import context
 import numpy as np
 
 from tools import parse_lines, print_part

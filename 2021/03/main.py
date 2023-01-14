@@ -1,7 +1,6 @@
 # https://adventofcode.com/2021/day/3
 import enum
 
-import context
 import numpy as np
 
 from tools import parse_lines, print_part
@@ -87,8 +86,7 @@ def calculate_life_support_rating(diagnostics_: np.ndarray) -> int:
 
 @print_part
 def solve(filepath: str, part: int = 1):
-    lines = parse_lines(filepath)
-    diagnostics = np.array([[int(x) for x in line] for line in lines])
+    diagnostics = np.array([[int(x) for x in line] for line in parse_lines(filepath)])
 
     if part == 1:
         result = calculate_power(diagnostics)
