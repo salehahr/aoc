@@ -1,4 +1,4 @@
-def parse_lines(filepath: str, strip:bool = True) -> list[str]:
+def parse_lines(filepath: str, strip: bool = True) -> list[str]:
     """
     Returns a list of the lines contained within the file.
     """
@@ -28,3 +28,13 @@ def print_part(func):
         return func(*args, **kwargs)
 
     return _wrapped
+
+
+def manhattan_distance(x1: int, y1: int, x2: int, y2: int) -> int:
+    return abs(x2 - x1) + abs(y2 - y1)
+
+
+def print_ans(ans, correct_ans=None):
+    if correct_ans:
+        assert ans == correct_ans
+    print(ans)
