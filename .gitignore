@@ -1,5 +1,7 @@
 *.idea*
 *pycache*
 *vscode*
+*venv*
+
 *.exe
 *.txt
