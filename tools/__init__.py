@@ -49,6 +49,10 @@ def get_numbers(
     ]
 
 
+def flatten_list(list_: list) -> list:
+    return [vv for v in list_ for vv in v]
+
+
 def print_ans(ans, correct_ans=None):
     if correct_ans:
         assert ans == correct_ans
