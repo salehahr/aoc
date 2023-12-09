@@ -1,12 +1,7 @@
 import math
 import re
 
-from tools import parse_lines, print_part
-
-
-def get_numbers(line: str, as_ints: bool = True) -> list[int | str]:
-    transformer = int if as_ints else lambda x: x
-    return [transformer(num) for num in re.findall(r"\d+", line)]
+from tools import get_numbers, parse_lines, print_part
 
 
 def parse(line: str, part: int) -> list[int]:
