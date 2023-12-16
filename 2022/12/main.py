@@ -1,27 +1,20 @@
 import numpy as np
-
-from tools import parse_lines, print_part
-
-
-def neighbour_coords(r, c, h, w):
-    rcs = [(r - 1, c), (r + 1, c), (r, c - 1), (r, c + 1)]
-    for ri, ci in rcs:
-        if 0 <= ri < h and 0 <= ci < w:
-            yield int(ri), int(ci)
+from tools import get_array, print_part
+from tools.generic_types import Coordinates, get_neighbours
 
 
-def can_climb(src, dst):
+def can_climb(src: int, dst: int) -> bool:
     return dst <= (src + 1)
 
 
-def dijkstra(array, start_rc, end_rc):
+def dijkstra(array: np.array, start_rc: Coordinates, end_rc: Coordinates):
     # https://en.wikipedia.org/wiki/Dijkstra%27s_algorithm#Pseudocode
 
     dist_array = np.full(array.shape, np.inf)
     dist_array[start_rc] = 0
 
     height, width = array.shape
-    Q = [(r, c) for r in range(height) for c in range(width)]
+    Q = [Coordinates(r, c) for r in range(height) for c in range(width)]
     Q.sort(key=lambda x: dist_array[x])
 
     result = None
@@ -30,7 +23,7 @@ def dijkstra(array, start_rc, end_rc):
 
         neighbour_rcs = [
             v
-            for v in neighbour_coords(*rc_u, *array.shape)
+            for v in get_neighbours(rc_u, *array.shape)
             if v in Q and can_climb(array[rc_u], array[v])
         ]
 
@@ -42,7 +35,7 @@ def dijkstra(array, start_rc, end_rc):
         Q.sort(key=lambda x: dist_array[x])
 
     try:
-        result = int(dist_array[end_rc])
+        result = int(dist_array[end_rc][0])
     except OverflowError:
         result = np.inf
     finally:
@@ -51,23 +44,24 @@ def dijkstra(array, start_rc, end_rc):
 
 @print_part
 def solve(filepath: str, part: int = 1):
-    array = np.array([[ord(c) for c in line] for line in parse_lines(filepath)])
+    array = get_array(filepath, func=ord)
+    start_rc = Coordinates(*np.where(array == ord("S")))
 
-    start_rc = np.where(array == ord("S"))
     if part == 1:
         array[start_rc] = ord("a") - 1
         start_rcs = [start_rc]
     else:
         array[start_rc] = ord("a")
-        start_rcs = [(x, y) for x, y in zip(*np.where(array == ord("b")))]
+        start_rcs = [Coordinates(*rc) for rc in zip(*np.where(array == ord("b")))]
 
-    end_rc = np.where(array == ord("E"))
+    end_rc = Coordinates(*np.where(array == ord("E")))
     array[end_rc] = ord("z") + 1
 
     steps = np.inf
     for src in start_rcs:
-        steps = min(steps, dijkstra(array, src, end_rc))
-        print(steps)
+        if steps != (next_min := min(steps, dijkstra(array, src, end_rc))):
+            steps = next_min
+            print(f"{steps}... ", end="")
 
     if part == 1:
         print(steps)

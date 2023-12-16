@@ -1,5 +1,7 @@
 import re
 
+import numpy as np
+
 
 def parse_lines(filepath: str, strip: bool = True) -> list[str]:
     """
@@ -8,6 +10,25 @@ def parse_lines(filepath: str, strip: bool = True) -> list[str]:
     with open(filepath, "r") as file:
         lines = file.readlines()
     return [line.strip() if strip else line for line in lines]
+
+
+def get_array(filepath: str, func: callable = None) -> np.array:
+    apply_func = generate_callback(func)
+    return np.array([[apply_func(c) for c in line] for line in parse_lines(filepath)])
+
+
+def generate_callback(func: callable = None) -> callable:
+    if func:
+
+        def __wrapped_function(arg):
+            return func(arg)
+
+    else:
+
+        def __wrapped_function(arg):
+            return arg
+
+    return __wrapped_function
 
 
 def peek(filepath: str, n: int = 1) -> str | list[str]:
