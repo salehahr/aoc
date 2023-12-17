@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import math
 from enum import Enum
 from typing import NamedTuple
 
@@ -8,6 +9,9 @@ def get_neighbours(rc: Coordinates, h: int, w: int):
     for nrc in [rc + direction for direction in Direction]:
         if 0 <= nrc.r < h and 0 <= nrc.c < w:
             yield nrc
+
+
+BaseState = NamedTuple
 
 
 class Coordinates(NamedTuple):
@@ -43,6 +47,10 @@ class Coordinates(NamedTuple):
     def __rmul__(self, other: int):
         return self.__mul__(other)
 
+    @property
+    def magnitude(self):
+        return math.sqrt(self.r**2 + self.c**2)
+
 
 class Direction(Enum):
     UP = Coordinates(-1, 0)
@@ -52,3 +60,29 @@ class Direction(Enum):
 
     def __repr__(self):
         return self.name[0]
+
+    @property
+    def is_vertical(self) -> bool:
+        return self in DirectionCategory.VERTICAL.value
+
+    @staticmethod
+    def from_coords(coords: Coordinates) -> Direction:
+        magnitude = coords.magnitude
+        rc = [int(getattr(coords, val)) // magnitude for val in "rc"]
+        return Direction(Coordinates(*rc))
+
+
+class DirectionCategory(Enum):
+    VERTICAL = (Direction.UP, Direction.DOWN)
+    HORIZONTAL = (Direction.LEFT, Direction.RIGHT)
+
+    def __lt__(self, other: DirectionCategory) -> bool:
+        return True
+
+    @property
+    def opposite(self) -> DirectionCategory:
+        match self:
+            case DirectionCategory.VERTICAL:
+                return DirectionCategory.HORIZONTAL
+            case DirectionCategory.HORIZONTAL:
+                return DirectionCategory.VERTICAL
