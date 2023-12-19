@@ -1,8 +1,7 @@
 import sys
 from collections import defaultdict
 
-import range_ops
-from tools import flatten_list, get_numbers, parse_lines, print_part
+from tools import flatten_list, get_numbers, parse_lines, print_part, range_ops
 
 
 def seed_factory(line: str, part: int) -> list[int | range]:

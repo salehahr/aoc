@@ -85,5 +85,11 @@ def flatten_list(list_: list) -> list:
 
 def print_ans(ans, correct_ans=None):
     if correct_ans:
-        assert ans == correct_ans
+        error_message = f"\nExpected {correct_ans},"
+        error_message += f"\ngot      {ans}"
+        assert ans == correct_ans, error_message
     print(ans)
+
+
+def ienumerate(*args):
+    return enumerate(zip(*args))

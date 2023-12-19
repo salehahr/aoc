@@ -11,7 +11,7 @@ def get_overlap(src0: range, src: range):
     elif src.start < src0.start <= src.stop <= src0.stop:  # right intersection
         return range(src0.start, src.stop)
     else:
-        assert False
+        raise NotImplementedError(f"{src0=}, {src=}")
 
 
 def r1_inside_r2(r1: range, r2: range):
