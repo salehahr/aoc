@@ -1,4 +1,3 @@
-import re
 from functools import cache
 
 from tools import parse_lines, print_part
@@ -9,15 +8,6 @@ https://www.reddit.com/r/adventofcode/comments/18hbbxe/2023_day_12python_stepbys
 """
 
 
-ignore_hash_before = r"(?<!#)"
-ignore_hash_after = r"(?!#)"
-
-
-def base_pattern(num: int):
-    num_str = "{" + str(num) + "}"
-    return rf"{ignore_hash_before}[?#]{num_str}{ignore_hash_after}"
-
-
 @cache
 def handle_hash(record: str, groups: tuple[int, ...]) -> int:
     """
@@ -25,14 +15,15 @@ def handle_hash(record: str, groups: tuple[int, ...]) -> int:
     """
     n = groups[0]
 
-    # no overall match for groups
-    if re.match(".+?".join([base_pattern(x) for x in groups]), record) is None:
+    # no match
+    if record[:n].replace("?", "#") != "#" * n:
         return 0
-    # final match
-    elif record == re.match(base_pattern(n), record)[0]:
-        return 1
+    elif len(record) == n:
+        return len(groups) == 1
+    elif record[n] in ".?":
+        return num_arrangements(record[n + 1 :], groups[1:])
 
-    return num_arrangements(record[n + 1 :], groups[1:])
+    return 0
 
 
 @cache
@@ -40,9 +31,8 @@ def handle_dot(record, groups) -> int:
     """
     Go to next non-dot value without consuming a group number.
     """
-    if next_non_dot := re.search(r"[^.]", record[1:]):
-        s = next_non_dot.start() + 1
-        return num_arrangements(record[s:], groups)
+    if next_record := record[1:]:
+        return num_arrangements(next_record, groups)
     return 0
 
 
