@@ -1,4 +1,5 @@
 import re
+import time
 
 import numpy as np
 
@@ -48,8 +49,16 @@ def print_part(func):
     """
 
     def _wrapped(*args, **kwargs):
-        print(f"\nPart {kwargs['part']}")
-        return func(*args, **kwargs)
+        part = kwargs["part"]
+        start = time.time()
+        result = func(*args, **kwargs)
+        duration = time.time() - start
+
+        if result:
+            print(f"Part {part} ({duration:.4f} s)")
+            print(f"{result}\n")
+        else:
+            print(f"Part {part} ({duration:.4f} s)\n")
 
     return _wrapped
 
