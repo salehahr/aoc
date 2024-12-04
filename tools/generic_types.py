@@ -77,6 +77,18 @@ class Direction(Enum):
         rc = [int(getattr(coords, val)) // magnitude for val in "rc"]
         return Direction(Coordinates(*rc))
 
+    @staticmethod
+    def rotate_90(direction: Direction, clockwise: bool) -> Direction:
+        cval = complex(*direction.value)
+        if clockwise:
+            cval *= 0 - 1j
+        else:
+            cval *= 0 + 1j
+
+        for d in Direction:
+            if d.value == Coordinates(int(cval.real), int(cval.imag)):
+                return d
+
 
 class DirectionCategory(Enum):
     VERTICAL = (Direction.UP, Direction.DOWN)
