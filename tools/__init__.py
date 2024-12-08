@@ -1,5 +1,6 @@
 import re
 import time
+from typing import Generator, Iterable
 
 import numpy as np
 
@@ -79,8 +80,13 @@ def get_numbers(
     ]
 
 
-def flatten_list(list_: list) -> list:
-    return [vv for v in list_ for vv in v]
+def flatten(iterable: Iterable) -> Generator:
+    for v in iterable:
+        if isinstance(v, Iterable):
+            for vv in v:
+                yield vv
+        else:
+            yield v
 
 
 def print_ans(ans, correct_ans=None):
