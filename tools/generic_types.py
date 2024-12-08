@@ -2,13 +2,19 @@ from __future__ import annotations
 
 import math
 from enum import Enum
-from typing import NamedTuple
+from typing import Iterable, NamedTuple
 
 
-def get_neighbours(rc: Coordinates, h: int, w: int):
-    for nrc in [rc + direction for direction in Direction]:
-        if 0 <= nrc.r < h and 0 <= nrc.c < w:
-            yield nrc
+def in_bounds(coords: Coordinates, map_height: int, map_width: int) -> bool:
+    in_row = 0 <= coords.r < map_height
+    in_col = 0 <= coords.c < map_width
+    return in_row and in_col
+
+
+def get_neighbours(rc: Coordinates, h: int, w: int) -> Iterable[Coordinates]:
+    return filter(
+        lambda nrc: in_bounds(nrc, h, w), (rc + direction for direction in Direction)
+    )
 
 
 BaseState = NamedTuple

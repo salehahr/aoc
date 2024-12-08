@@ -1,7 +1,7 @@
 import sys
 from collections import defaultdict
 
-from tools import flatten_list, get_numbers, parse_lines, print_part, range_ops
+from tools import flatten, get_numbers, parse_lines, print_part, range_ops
 
 
 def seed_factory(line: str, part: int) -> list[int | range]:
@@ -92,7 +92,7 @@ def solve(filepath: str, part: int = 1):
                     if not found:
                         destinations0[src0].add(src0)
 
-                sources0 = flatten_list(list(destinations0.values()))
+                sources0 = flatten(destinations0.values())
 
                 if "location" in map_descr:
                     lowest_loc = min(lowest_loc, min([r.start for r in sources0]))
