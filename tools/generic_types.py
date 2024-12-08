@@ -5,7 +5,14 @@ from enum import Enum
 from typing import NamedTuple
 
 
+def in_bounds(coords: Coordinates, map_height: int, map_width) -> bool:
+    in_row = 0 <= coords.r < map_height
+    in_col = 0 <= coords.c < map_width
+    return in_row and in_col
+
+
 def get_neighbours(rc: Coordinates, h: int, w: int):
+    assert in_bounds(rc, h, w)
     for nrc in [rc + direction for direction in Direction]:
         if 0 <= nrc.r < h and 0 <= nrc.c < w:
             yield nrc

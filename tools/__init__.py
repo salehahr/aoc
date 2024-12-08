@@ -1,5 +1,6 @@
 import re
 import time
+from typing import Iterable
 
 import numpy as np
 
@@ -79,8 +80,8 @@ def get_numbers(
     ]
 
 
-def flatten_list(list_: list) -> list:
-    return [vv for v in list_ for vv in v]
+def flatten(iterable: Iterable) -> Iterable:
+    return [vv for v in iterable for vv in v]
 
 
 def print_ans(ans, correct_ans=None):
