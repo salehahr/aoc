@@ -11,10 +11,15 @@ def in_bounds(coords: Coordinates, map_height: int, map_width: int) -> bool:
     return in_row and in_col
 
 
-def get_neighbours(rc: Coordinates, h: int, w: int) -> Iterable[Coordinates]:
-    return filter(
-        lambda nrc: in_bounds(nrc, h, w), (rc + direction for direction in Direction)
-    )
+def get_neighbours(
+    rc: Coordinates, h: int = None, w: int = None, incl_diags: bool = False
+) -> Iterable[Coordinates]:
+    all_dirs = Direction if not incl_diags else CompassDirection
+    neighbours = (rc + direction for direction in all_dirs)
+    if h is None and w is None:
+        return neighbours
+    else:
+        return filter(lambda nrc: in_bounds(nrc, h, w), neighbours)
 
 
 BaseState = NamedTuple
@@ -25,12 +30,12 @@ class Coordinates(NamedTuple):
     c: int
 
     def __repr__(self):
-        return f"{(self.r, self.c)}"
+        return f"{(int(self.r), int(self.c))}"
 
-    def __add__(self, other: Coordinates | Direction | tuple):
+    def __add__(self, other: Coordinates | Direction | CompassDirection | tuple):
         if isinstance(other, Coordinates):
             return Coordinates(self.r + other.r, self.c + other.c)
-        elif isinstance(other, Direction):
+        elif isinstance(other, Direction) or isinstance(other, CompassDirection):
             return self + Coordinates(*other.value)
         elif isinstance(other, tuple):
             return self + Coordinates(*other)
@@ -68,6 +73,13 @@ class Direction(Enum):
         return self.name[0]
 
     @property
+    def category(self) -> DirectionCategory:
+        if self.is_vertical:
+            return DirectionCategory.VERTICAL
+        else:
+            return DirectionCategory.HORIZONTAL
+
+    @property
     def is_vertical(self) -> bool:
         return self in DirectionCategory.VERTICAL.value
 
@@ -88,6 +100,30 @@ class Direction(Enum):
         for d in Direction:
             if d.value == Coordinates(int(cval.real), int(cval.imag)):
                 return d
+
+    def get_orthogonal(self) -> Direction:
+        match self:
+            case Direction.LEFT:
+                return Direction.RIGHT
+            case Direction.RIGHT:
+                return Direction.LEFT
+            case Direction.UP:
+                return Direction.DOWN
+            case Direction.DOWN:
+                return Direction.UP
+            case _:
+                raise ValueError
+
+
+class CompassDirection(Enum):
+    NORTH = Direction.UP.value
+    SOUTH = Direction.DOWN.value
+    EAST = Direction.RIGHT.value
+    WEST = Direction.LEFT.value
+    NORTHWEST = Coordinates(-1, -1)
+    NORTHEAST = Coordinates(-1, 1)
+    SOUTHWEST = Coordinates(1, -1)
+    SOUTHEAST = Coordinates(1, 1)
 
 
 class DirectionCategory(Enum):
