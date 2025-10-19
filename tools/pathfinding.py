@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import itertools
 import sys
 from collections import defaultdict
 from queue import PriorityQueue, Queue
@@ -59,22 +60,63 @@ def dijkstra(
     prev_rc = {}
     running_costs = defaultdict(lambda: sys.maxsize)
     to_explore = PriorityQueue()
+    counter = itertools.count()
 
     for x in x0:
         prev_rc[x] = None
         running_costs[x] = 0
-        to_explore.put((0, x))
+        to_explore.put((0, next(counter), x))
 
     while not to_explore.empty():
-        _, x = to_explore.get()
+        _, _, x = to_explore.get()
 
         if break_condition(x):
             return running_costs[x], get_path(x, prev_rc)
 
-        for x_next in next_states(x):
+        next_xs = next_states(x)
+        for x_next in next_xs:
             cost = running_costs[x] + transition_cost(x, x_next)
             if cost < running_costs[x_next]:
                 running_costs[x_next] = cost
                 priority = cost + heuristic(x_next)
-                to_explore.put((priority, x_next))
+                to_explore.put((priority, next(counter), x_next))
                 prev_rc[x_next] = x
+
+
+def multipath_dijkstra(
+    x0: Iterable[BaseState],
+    next_states: Callable[[BaseState], Iterable[BaseState]],
+    transition_cost: Callable[[BaseState, BaseState], NumericType],
+    break_condition: Callable[[BaseState], bool],
+    heuristic: Callable[[BaseState], NumericType] = lambda x: 0,
+) -> tuple[dict[BaseState, NumericType], dict[BaseState, set[BaseState]]]:
+    prev_rc = defaultdict(set)
+    running_costs = defaultdict(lambda: sys.maxsize)
+    to_explore = PriorityQueue()
+    counter = itertools.count()
+
+    for x in x0:
+        prev_rc[x] = None
+        running_costs[x] = 0
+        to_explore.put((0, next(counter), x))
+
+    while not to_explore.empty():
+        _, _, x = to_explore.get()
+
+        if break_condition(x):
+            break
+
+        next_xs = next_states(x)
+        for x_next in next_xs:
+            cost = running_costs[x] + transition_cost(x, x_next)
+            if cost < running_costs[x_next]:
+                running_costs[x_next] = cost
+                priority = cost + heuristic(x_next)
+                to_explore.put((priority, next(counter), x_next))
+                prev_rc[x_next].add(x)
+            elif cost == running_costs[x_next]:
+                priority = cost + heuristic(x_next)
+                to_explore.put((priority, next(counter), x_next))
+                prev_rc[x_next].add(x)
+
+    return running_costs, prev_rc
