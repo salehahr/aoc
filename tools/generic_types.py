@@ -83,6 +83,10 @@ class Direction(Enum):
     def is_vertical(self) -> bool:
         return self in DirectionCategory.VERTICAL.value
 
+    @property
+    def is_horizontal(self) -> bool:
+        return not self.is_vertical
+
     @staticmethod
     def from_coords(coords: Coordinates) -> Direction:
         magnitude = coords.magnitude
@@ -140,3 +144,11 @@ class DirectionCategory(Enum):
                 return DirectionCategory.HORIZONTAL
             case DirectionCategory.HORIZONTAL:
                 return DirectionCategory.VERTICAL
+
+
+CHAR_TO_DIRECTIONS = {
+    ">": Direction.RIGHT,
+    "^": Direction.UP,
+    "<": Direction.LEFT,
+    "v": Direction.DOWN,
+}

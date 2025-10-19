@@ -1,20 +1,14 @@
 import numpy as np
-from tools import get_array, print_part
-from tools.generic_types import Coordinates, Direction
 
-SLOPE_MAP = {
-    ">": Direction.RIGHT,
-    "<": Direction.LEFT,
-    "^": Direction.UP,
-    "v": Direction.DOWN,
-}
+from tools import get_array, print_part
+from tools.generic_types import CHAR_TO_DIRECTIONS, Coordinates, Direction
 
 
 def get_neighbours(rc: Coordinates, map_: np.array):
     for direction in Direction:
         nrc = rc + direction
-        if (n_sym := map_[nrc]) in SLOPE_MAP.keys():
-            allowed_direction = SLOPE_MAP[n_sym]
+        if (n_sym := map_[nrc]) in CHAR_TO_DIRECTIONS.keys():
+            allowed_direction = CHAR_TO_DIRECTIONS[n_sym]
             if direction == allowed_direction:
                 yield nrc
         else:
@@ -27,7 +21,7 @@ def solve(filepath: str, part: int):
     height, width = map_.shape
 
     if part == 2:
-        for sym in SLOPE_MAP.keys():
+        for sym in CHAR_TO_DIRECTIONS.keys():
             map_[map_ == sym] = "."
 
     start_rc = Coordinates(0, 1)
