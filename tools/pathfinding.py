@@ -41,8 +41,7 @@ def bfs(start_rc: Coordinates, end_rc: Coordinates, next_states: Callable):
         rc = to_explore.get()
 
         if rc == end_rc:
-            get_path(end_rc, prev_rc)
-            break
+            return get_path(end_rc, prev_rc)
 
         neighbours = set(next_states(rc)) - set(prev_rc.keys())
         for nrc in neighbours:
